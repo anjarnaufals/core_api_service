@@ -1,7 +1,7 @@
 name: core_api_service
-description: A starting point for Dart libraries or applications.
+description: Core Api Service use dio package
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/anjarnaufals/core_api_service.git
 environment:
   sdk: ^3.0.5
 
