@@ -1,4 +1,4 @@
-library core_service;
+library core_api_service;
 
 import 'dart:convert';
 import 'dart:developer';
