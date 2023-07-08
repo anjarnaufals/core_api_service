@@ -64,18 +64,22 @@ _errorException(dynamic error) {
       } else {
         final somethingError = jsonEncode(error);
 
-        RegExp regExp = RegExp(r'"code":(\d+),\s*"message":"(.+?)"');
+        //edited
 
-        Match? match = regExp.firstMatch(somethingError);
+        // RegExp regExp = RegExp(r'"code":(\d+),\s*"message":"(.+?)"');
 
-        if (match != null) {
-          String code = match.group(1)!;
-          String message = match.group(2)!;
+        // Match? match = regExp.firstMatch(somethingError);
 
-          return "Code: $code , Message: $message";
-        } else {
-          return error;
-        }
+        // if (match != null) {
+        //   String code = match.group(1)!;
+        //   String message = match.group(2)!;
+
+        //   return "Code: $code , Message: $message";
+        // } else {
+        //   return error;
+        // }
+
+        return somethingError;
       }
     }
     if (error is String) {

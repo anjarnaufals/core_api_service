@@ -15,4 +15,6 @@ Instructions on how to use them in your own application are linked below.
 
 ## Development
 
-Want to contribute? Great!
+I would be very happy and hopeful if all of you could review and improve what is lacking in this package for various reasons.
+
+## TODO
