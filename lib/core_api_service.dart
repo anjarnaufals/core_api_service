@@ -4,5 +4,5 @@
 library;
 
 export 'src/core_api_services_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/core_error_response.dart';
+export 'src/core_api_service_exception.dart';
