@@ -34,7 +34,7 @@ Future<dynamic> _filterResponse(dynamic json, int? statusCode) async {
   if (statusCode == 200) {
     return json;
   } else {
-    throw _customMessage(json);
+    throw json;
   }
 }
 
@@ -51,8 +51,8 @@ _dioErrorThrow(DioException e) {
 
 _errorException(dynamic error) {
   if (error != null) {
-    if (error is CoreErrorModel) {
-      CoreErrorModel err = error;
+    if (error is CoreErrorResponse) {
+      CoreErrorResponse err = error;
 
       return err;
     }
@@ -63,8 +63,6 @@ _errorException(dynamic error) {
         return err;
       } else {
         final somethingError = jsonEncode(error);
-
-        //edited
 
         // RegExp regExp = RegExp(r'"code":(\d+),\s*"message":"(.+?)"');
 
@@ -90,21 +88,5 @@ _errorException(dynamic error) {
     // usually if the server response is null
     // throw everything error use Exception Object
     return Exception("Server Error | Error URL Endpoint | Null Response");
-  }
-}
-
-CoreErrorModel _customMessage(json) {
-  var code = json["code"].toString();
-  var msg = json["error"].toString();
-  var err = CoreErrorType.somethingWrong;
-  err.code = int.parse(code);
-
-  switch (code) {
-    case "403":
-      err.msg = msg;
-      return err;
-    default:
-      err.msg = msg;
-      return err;
   }
 }
