@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 
 import 'core_base_service.dart';
-import 'core_error_model.dart';
+import 'core_error_type.dart';
 import 'core_error_response.dart';
 import 'core_api_service_exception.dart';
 
