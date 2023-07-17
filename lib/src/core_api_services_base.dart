@@ -1,6 +1,5 @@
 library core_api_service;
 
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -18,42 +17,69 @@ part 'core_operation.dart';
 const Duration kconnectTimeout = Duration(milliseconds: 10000);
 const Duration kreceiveTimeout = Duration(milliseconds: 5000);
 
+/// [ApiServices]
+/// To start using [ApiServices], you have to call ApiServices().initialize in main() function
+///  before runApp() function.
 class ApiServices with BaseService {
-  static String _baseUrl = '';
-  static Map<String, dynamic> _acceptheaders = {};
-  static Map<String, dynamic> _bodyHeaders = {};
-  static bool _isInitialized = false;
+  ApiServices._(
+    this._baseUrl,
+    this._acceptHeaders,
+    this._bodyHeaders,
+  );
 
-  static Future<void> initialize({
-    required String baseUrl,
-    required Map<String, dynamic> acceptheaders,
-    required Map<String, dynamic> bodyHeaders,
-  }) async {
-    _baseUrl = baseUrl;
-    _acceptheaders = acceptheaders;
-    _bodyHeaders = bodyHeaders;
+  factory ApiServices() {
+    return _instance ??= ApiServices._('', {}, {});
+  }
+  //
+  static ApiServices? _instance;
+  static bool _isInitialized = false;
+  static final _dio = Dio(
+    BaseOptions(
+      baseUrl: ApiServices().baseUrl,
+      connectTimeout: kconnectTimeout,
+      receiveTimeout: kreceiveTimeout,
+      headers: ApiServices().acceptHeaders,
+    ),
+  );
+
+  String _baseUrl = '';
+  Map<String, dynamic> _acceptHeaders = {};
+  Map<String, dynamic> _bodyHeaders = {};
+
+  void initialize({
+    required String initBaseUrl,
+    required Map<String, dynamic> initAcceptheaders,
+    required Map<String, dynamic> initBodyHeaders,
+  }) {
+    if (_isInitialized) {
+      throw ApiServiceException(
+        "Api Service has been initialized more than one",
+      );
+    }
+
+    _baseUrl = initBaseUrl;
+    _acceptHeaders = initAcceptheaders;
+    _bodyHeaders = initBodyHeaders;
     _isInitialized = true;
   }
 
-  static Map<String, dynamic> get showBodyHeaders => _bodyHeaders;
+  String get baseUrl => _instance!._baseUrl;
+  Map<String, dynamic> get bodyHeaders => _instance!._bodyHeaders;
+  Map<String, dynamic> get acceptHeaders => _instance!._acceptHeaders;
 
-  static set updateHeaders(Map<String, dynamic> headers) {
+  void updateHeaders(Map<String, dynamic> headers) {
     for (var e in headers.entries) {
       _bodyHeaders[e.key] = e.value;
     }
   }
 
-  final _dio = Dio(
-    BaseOptions(
-      baseUrl: _baseUrl,
-      connectTimeout: kconnectTimeout,
-      receiveTimeout: kreceiveTimeout,
-      headers: _acceptheaders,
-    ),
-  );
-
   @override
-  Future get(String url, {query, showLog = false, retries = 3}) {
+  Future get(
+    String url, {
+    query,
+    showLog = false,
+    retries = 3,
+  }) {
     _initializedCheck();
 
     if (showLog) _dio.interceptors.add(_CustomInterceptors());
@@ -64,11 +90,16 @@ class ApiServices with BaseService {
     final options = Options(headers: _bodyHeaders);
 
     return _constructDio(
-        _dio.get(url, options: options, queryParameters: query));
+      _dio.get(url, options: options, queryParameters: query),
+    );
   }
 
   @override
-  Future post(String url, Map<String, dynamic>? data, {showLog = false}) {
+  Future post(
+    String url,
+    Map<String, dynamic>? data, {
+    showLog = false,
+  }) {
     _initializedCheck();
 
     if (showLog) _dio.interceptors.add(_CustomInterceptors());
@@ -81,8 +112,12 @@ class ApiServices with BaseService {
   }
 
   @override
-  Future delete(String url,
-      {Map<String, dynamic>? query, showLog = false, data}) {
+  Future delete(
+    String url, {
+    Map<String, dynamic>? query,
+    showLog = false,
+    data,
+  }) {
     _initializedCheck();
 
     if (showLog) _dio.interceptors.add(_CustomInterceptors());
@@ -92,11 +127,16 @@ class ApiServices with BaseService {
     final options = Options(headers: _bodyHeaders);
 
     return _constructDio(
-        _dio.delete(url, options: options, queryParameters: query, data: data));
+      _dio.delete(url, options: options, queryParameters: query, data: data),
+    );
   }
 
   @override
-  Future put(String url, Map<String, dynamic>? data, {showLog = false}) {
+  Future put(
+    String url,
+    Map<String, dynamic>? data, {
+    showLog = false,
+  }) {
     _initializedCheck();
 
     if (showLog) _dio.interceptors.add(_CustomInterceptors());
@@ -109,7 +149,11 @@ class ApiServices with BaseService {
   }
 
   @override
-  Future postFormData(String url, FormData? data, {showLog = false}) {
+  Future postFormData(
+    String url,
+    FormData? data, {
+    showLog = false,
+  }) {
     _initializedCheck();
 
     if (showLog) _dio.interceptors.add(_CustomInterceptors());
@@ -119,5 +163,20 @@ class ApiServices with BaseService {
     final options = Options(headers: _bodyHeaders);
 
     return _constructDio(_dio.post(url, options: options, data: data));
+  }
+
+  void _initializedCheck() {
+    if (!_isInitialized) {
+      throw ApiServiceException('Api Service has not been initialized !.');
+    }
+    if (_instance!._baseUrl.isEmpty) {
+      throw ApiServiceException('Base Url Undefined !.');
+    }
+    if (_instance!._acceptHeaders.isEmpty) {
+      throw ApiServiceException('Accept Headers Undefined !.');
+    }
+    if (_instance!._bodyHeaders.isEmpty) {
+      throw ApiServiceException('Body Headers Undefined !.');
+    }
   }
 }

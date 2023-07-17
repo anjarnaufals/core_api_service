@@ -19,6 +19,7 @@ class RealtimeWeather {
     if (current != null) {
       data['current'] = current!.toJson();
     }
+
     return data;
   }
 }
@@ -33,15 +34,16 @@ class Location {
   int? localtimeEpoch;
   String? localtime;
 
-  Location(
-      {this.name,
-      this.region,
-      this.country,
-      this.lat,
-      this.lon,
-      this.tzId,
-      this.localtimeEpoch,
-      this.localtime});
+  Location({
+    this.name,
+    this.region,
+    this.country,
+    this.lat,
+    this.lon,
+    this.tzId,
+    this.localtimeEpoch,
+    this.localtime,
+  });
 
   Location.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -64,6 +66,7 @@ class Location {
     data['tz_id'] = tzId;
     data['localtime_epoch'] = localtimeEpoch;
     data['localtime'] = localtime;
+
     return data;
   }
 }
@@ -93,30 +96,31 @@ class Current {
   double? gustMph;
   double? gustKph;
 
-  Current(
-      {this.lastUpdatedEpoch,
-      this.lastUpdated,
-      this.tempC,
-      this.tempF,
-      this.isDay,
-      this.condition,
-      this.windMph,
-      this.windKph,
-      this.windDegree,
-      this.windDir,
-      this.pressureMb,
-      this.pressureIn,
-      this.precipMm,
-      this.precipIn,
-      this.humidity,
-      this.cloud,
-      this.feelslikeC,
-      this.feelslikeF,
-      this.visKm,
-      this.visMiles,
-      this.uv,
-      this.gustMph,
-      this.gustKph});
+  Current({
+    this.lastUpdatedEpoch,
+    this.lastUpdated,
+    this.tempC,
+    this.tempF,
+    this.isDay,
+    this.condition,
+    this.windMph,
+    this.windKph,
+    this.windDegree,
+    this.windDir,
+    this.pressureMb,
+    this.pressureIn,
+    this.precipMm,
+    this.precipIn,
+    this.humidity,
+    this.cloud,
+    this.feelslikeC,
+    this.feelslikeF,
+    this.visKm,
+    this.visMiles,
+    this.uv,
+    this.gustMph,
+    this.gustKph,
+  });
 
   Current.fromJson(Map<String, dynamic> json) {
     lastUpdatedEpoch = json['last_updated_epoch'];
@@ -173,6 +177,7 @@ class Current {
     data['uv'] = uv;
     data['gust_mph'] = gustMph;
     data['gust_kph'] = gustKph;
+
     return data;
   }
 }
@@ -195,6 +200,7 @@ class Condition {
     data['text'] = text;
     data['icon'] = icon;
     data['code'] = code;
+
     return data;
   }
 }

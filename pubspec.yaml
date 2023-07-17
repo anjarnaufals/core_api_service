@@ -1,12 +1,13 @@
 name: core_api_service
 description: Core Api Service use dio package
-version: 1.0.0+1
+version: 1.0.0+2
 repository: https://github.com/anjarnaufals/core_api_service.git
 environment:
   sdk: ^3.0.5
 
 # Add regular dependencies here.
 dependencies:
+  dart_code_metrics: ^5.0.1
   dio: ^5.2.1+1
   dio_smart_retry: ^5.0.0
 # path: ^1.8.0

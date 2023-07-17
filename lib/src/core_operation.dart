@@ -1,20 +1,5 @@
 part of 'core_api_services_base.dart';
 
-void _initializedCheck() {
-  if (!ApiServices._isInitialized) {
-    throw ApiServiceException('Api Service has not been initialized !.');
-  }
-  if (ApiServices._baseUrl.isEmpty) {
-    throw ApiServiceException('Base Url Undefined !.');
-  }
-  if (ApiServices._acceptheaders.isEmpty) {
-    throw ApiServiceException('Accept Headers Undefined !.');
-  }
-  if (ApiServices._bodyHeaders.isEmpty) {
-    throw ApiServiceException('Body Headers Undefined !.');
-  }
-}
-
 Future<void> _constructDio(Future<Response> future) async {
   dynamic responseJson;
   try {
@@ -59,26 +44,20 @@ _errorException(dynamic error) {
     if (error is Map<String, dynamic>) {
       CoreErrorResponse err = CoreErrorResponse.fromJson(error);
 
-      if (err.code != null) {
-        return err;
-      } else {
-        final somethingError = jsonEncode(error);
+      // RegExp regExp = RegExp(r'"code":(\d+),\s*"message":"(.+?)"');
 
-        // RegExp regExp = RegExp(r'"code":(\d+),\s*"message":"(.+?)"');
+      // Match? match = regExp.firstMatch(somethingError);
 
-        // Match? match = regExp.firstMatch(somethingError);
+      // if (match != null) {
+      //   String code = match.group(1)!;
+      //   String message = match.group(2)!;
 
-        // if (match != null) {
-        //   String code = match.group(1)!;
-        //   String message = match.group(2)!;
+      //   return "Code: $code , Message: $message";
+      // } else {
+      //   return error;
+      // }
 
-        //   return "Code: $code , Message: $message";
-        // } else {
-        //   return error;
-        // }
-
-        return somethingError;
-      }
+      return err.code != null ? err : error;
     }
     if (error is String) {
       return error;
@@ -87,6 +66,8 @@ _errorException(dynamic error) {
     // return error;
     // usually if the server response is null
     // throw everything error use Exception Object
-    return Exception("Server Error | Error URL Endpoint | Null Response");
+    return ApiServiceException(
+      "Server Error | Error URL Endpoint | Null Response",
+    );
   }
 }
