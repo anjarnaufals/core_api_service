@@ -7,10 +7,12 @@ void main() {
 
     setUp(() {
       // Additional setup goes here.
+      null;
     });
 
     test('First Test', () {
       // expect(awesome.isAwesome, isTrue);
+      null;
     });
   });
 }

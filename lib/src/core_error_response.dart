@@ -35,6 +35,7 @@ class CoreErrorResponse {
     data['code'] = code;
     data['message'] = message;
     data['data'] = this.data;
+
     return data;
   }
 }
