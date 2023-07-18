@@ -21,55 +21,36 @@ const Duration kreceiveTimeout = Duration(milliseconds: 5000);
 /// To start using [ApiServices], you have to call ApiServices().initialize in main() function
 ///  before runApp() function.
 class ApiServices with BaseService {
-  ApiServices._(
-    this._baseUrl,
-    this._acceptHeaders,
-    this._bodyHeaders,
-  );
-
-  factory ApiServices() {
-    return _instance ??= ApiServices._('', {}, {});
+  ApiServices({
+    required String baseUrl,
+    required Map<String, dynamic> acceptHeaders,
+    required Map<String, dynamic> bodyHeaders,
+  }) {
+    _baseUrl = baseUrl;
+    _acceptHeaders = acceptHeaders;
+    _bodyHeaders = bodyHeaders;
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: kconnectTimeout,
+        receiveTimeout: kreceiveTimeout,
+        headers: acceptHeaders,
+      ),
+    );
   }
-  //
-  static ApiServices? _instance;
-  static bool _isInitialized = false;
-  static final _dio = Dio(
-    BaseOptions(
-      baseUrl: ApiServices().baseUrl,
-      connectTimeout: kconnectTimeout,
-      receiveTimeout: kreceiveTimeout,
-      headers: ApiServices().acceptHeaders,
-    ),
-  );
 
   String _baseUrl = '';
-  Map<String, dynamic> _acceptHeaders = {};
   Map<String, dynamic> _bodyHeaders = {};
+  Map<String, dynamic> _acceptHeaders = {};
 
-  void initialize({
-    required String initBaseUrl,
-    required Map<String, dynamic> initAcceptheaders,
-    required Map<String, dynamic> initBodyHeaders,
-  }) {
-    if (_isInitialized) {
-      throw ApiServiceException(
-        "Api Service has been initialized more than one",
-      );
-    }
-
-    _baseUrl = initBaseUrl;
-    _acceptHeaders = initAcceptheaders;
-    _bodyHeaders = initBodyHeaders;
-    _isInitialized = true;
-  }
-
-  String get baseUrl => _instance!._baseUrl;
-  Map<String, dynamic> get bodyHeaders => _instance!._bodyHeaders;
-  Map<String, dynamic> get acceptHeaders => _instance!._acceptHeaders;
+  late final Dio _dio;
+  String get baseUrl => _baseUrl;
+  Map<String, dynamic> get bodyHeaders => _bodyHeaders;
+  Map<String, dynamic> get acceptHeaders => _acceptHeaders;
 
   void updateHeaders(Map<String, dynamic> headers) {
     for (var e in headers.entries) {
-      _bodyHeaders[e.key] = e.value;
+      bodyHeaders[e.key] = e.value;
     }
   }
 
@@ -87,7 +68,7 @@ class ApiServices with BaseService {
     _dio.interceptors
         .add(RetryInterceptor(dio: _dio, retries: retries, logPrint: log));
 
-    final options = Options(headers: _bodyHeaders);
+    final options = Options(headers: bodyHeaders);
 
     return _constructDio(
       _dio.get(url, options: options, queryParameters: query),
@@ -106,7 +87,7 @@ class ApiServices with BaseService {
 
     _dio.interceptors.add(RetryInterceptor(dio: _dio, logPrint: log));
 
-    final options = Options(headers: _bodyHeaders);
+    final options = Options(headers: bodyHeaders);
 
     return _constructDio(_dio.post(url, options: options, data: data));
   }
@@ -124,7 +105,7 @@ class ApiServices with BaseService {
 
     _dio.interceptors.add(RetryInterceptor(dio: _dio, logPrint: log));
 
-    final options = Options(headers: _bodyHeaders);
+    final options = Options(headers: bodyHeaders);
 
     return _constructDio(
       _dio.delete(url, options: options, queryParameters: query, data: data),
@@ -143,7 +124,7 @@ class ApiServices with BaseService {
 
     _dio.interceptors.add(RetryInterceptor(dio: _dio, logPrint: log));
 
-    final options = Options(headers: _bodyHeaders);
+    final options = Options(headers: bodyHeaders);
 
     return _constructDio(_dio.put(url, options: options, data: data));
   }
@@ -160,22 +141,19 @@ class ApiServices with BaseService {
 
     _dio.interceptors.add(RetryInterceptor(dio: _dio, logPrint: log));
 
-    final options = Options(headers: _bodyHeaders);
+    final options = Options(headers: bodyHeaders);
 
     return _constructDio(_dio.post(url, options: options, data: data));
   }
 
   void _initializedCheck() {
-    if (!_isInitialized) {
-      throw ApiServiceException('Api Service has not been initialized !.');
-    }
-    if (_instance!._baseUrl.isEmpty) {
+    if (baseUrl.isEmpty) {
       throw ApiServiceException('Base Url Undefined !.');
     }
-    if (_instance!._acceptHeaders.isEmpty) {
+    if (acceptHeaders.isEmpty) {
       throw ApiServiceException('Accept Headers Undefined !.');
     }
-    if (_instance!._bodyHeaders.isEmpty) {
+    if (bodyHeaders.isEmpty) {
       throw ApiServiceException('Body Headers Undefined !.');
     }
   }

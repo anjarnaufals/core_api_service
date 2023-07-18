@@ -1,11 +1,8 @@
-import 'data/app_api_services.dart';
 import 'model/realtime_weather_error_model.dart';
 import 'repository/weather_repository.dart';
 
 void main() async {
   // *initialize Api Service
-
-  AppApiServices.init();
 
   // update headers
   // ApiServices.updateHeaders({"token": "something token"});
@@ -31,6 +28,17 @@ void main() async {
 
   try {
     var data = await WeatherRepository.getWeather(query);
+    print(data?.toJson());
+  } catch (e) {
+    if (e is Map<String, dynamic>) {
+      ErrorRealtimeWeather error = ErrorRealtimeWeather.fromMap(e);
+      print("ErrorRealtimeWeather ${error.toJson()}");
+    }
+    print(e.toString());
+  }
+
+  try {
+    var data = await WeatherRepository.getWeatherJakarta({"q": "jakarta"});
     print(data?.toJson());
   } catch (e) {
     if (e is Map<String, dynamic>) {
