@@ -1,5 +1,4 @@
-import 'package:core_api_service/core_api_service.dart';
-
+import '../data/app_api_services.dart';
 import '../model/realtime_weather_model.dart';
 
 class WeatherRepository {
@@ -7,7 +6,22 @@ class WeatherRepository {
 
   static Future<RealtimeWeather?> getWeather(Map<String, dynamic> query) async {
     try {
-      var res = await ApiServices().get(
+      var res = await AppApiServices.run().get(
+        realTimeWeatherUrl,
+        query: query,
+      );
+
+      return RealtimeWeather.fromJson(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<RealtimeWeather?> getWeatherJakarta(
+    Map<String, dynamic> query,
+  ) async {
+    try {
+      var res = await AppApiServices.run().get(
         realTimeWeatherUrl,
         query: query,
       );
