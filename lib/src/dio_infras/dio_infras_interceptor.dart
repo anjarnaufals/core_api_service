@@ -1,6 +1,6 @@
-part of 'core_api_services_base.dart';
+part of './dio_infras.dart';
 
-class _CustomInterceptors extends Interceptor {
+class DioInfrastructureInterceptors extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     log('REQUEST[${options.method}] => PATH:  ${options.uri}');
