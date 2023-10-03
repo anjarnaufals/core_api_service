@@ -1,11 +1,11 @@
-# CORE API SERVICES
+# VISC
 
 In Flutter applications, there are several ways to handle API requests, one of which is by using an available package called 'dio package' https://pub.dev/packages/dio. When using the dio package, there are numerous features available within it.
 The package attempts to simplify the usage of the dio package. The simplicity lies in users only needing to define the base URL, headers, and log usage.
 
 ## Plugins
 
-Core Api Service is currently extended with the following plugins.
+Visc is currently extended with the following plugins.
 Instructions on how to use them in your own application are linked below.
 
 | Plugin          | Soucre                                   |
