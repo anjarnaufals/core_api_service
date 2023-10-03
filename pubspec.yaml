@@ -1,16 +1,20 @@
-name: core_api_service
-description: Core Api Service use dio package
+name: visc
+description: http helper
 version: 1.0.0+3
-repository: https://github.com/anjarnaufals/core_api_service.git
+repository: https://github.com/anjarnaufals/visc.git
 environment:
   sdk: ^3.0.5
 
 # Add regular dependencies here.
 dependencies:
   dart_code_metrics: ^5.0.1
-  dio: ^5.2.1+1
+  dio: ^5.3.3
   dio_smart_retry: ^5.0.0
+  either_dart: ^1.0.0
+  http: ^1.1.0
+  logger: ^2.0.2+1
 # path: ^1.8.0
 dev_dependencies:
+  build_runner: ^2.4.6
   lints: ^2.0.0
   test: ^1.21.0
