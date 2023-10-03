@@ -1,7 +1,7 @@
 # VISC
 
-In Flutter applications, there are several ways to handle API requests, one of which is by using an available package called 'dio package' https://pub.dev/packages/dio or 'Http package' https://pub.dev/packages/http. When using the dio package, there are numerous features available within it.
-The package attempts to simplify the usage of the dio package. The simplicity lies in users only needing to define the base URL, headers, and log usage.
+In Flutter applications, there are several ways to handle API requests, one of which is by using an available package called 'dio package' https://pub.dev/packages/dio or 'Http package' https://pub.dev/packages/http. When using those package, there are numerous features available within it.
+The package attempts to simplify the usage of the those package. The simplicity lies in users only needing to define the base URL, url, headers, and log usage.
 
 ## Plugins
 
